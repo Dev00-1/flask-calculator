@@ -1,21 +1,44 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: demo-nginx
+  name: flask-calculator
   labels:
-    app: demo-nginx
+    app: flask-calculator
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: demo-nginx
+      app: flask-calculator
   template:
     metadata:
       labels:
-        app: demo-nginx
+        app: flask-calculator
     spec:
       containers:
-      - name: nginx
-        image: nginx:stable
-        ports:
-        - containerPort: 80
+        - name: flask
+          # *** Replace IMAGE_HERE with your actual image, e.g. devmalang/flask-calculator:latest
+          image: devmalang/flask-calculator:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
