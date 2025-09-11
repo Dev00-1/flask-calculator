@@ -10,4 +10,4 @@ spec:
     - name: http
       port: 5000
       targetPort: 5000
-      
+      nodePort: 32093   # optional (30000-32767)
