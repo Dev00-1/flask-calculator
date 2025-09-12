@@ -19,7 +19,7 @@ def normalize_expression(expr):
 def home():
     return render_template("index.html", result=None)
 
-@app.route("/calculate-ui", methods=["POST"])
+@app.route("/calculate-ui", methods=["GET", "POST"])
 def calculate_ui():
     operation = request.form["operation"]
     result = None
